@@ -7,6 +7,7 @@ import (
 	"github.com/manicminer/hamilton/environments"
 )
 
+// EnvironmentFromAzureEnvironment converts an Autorest azure.Environment into a Hamilton environments.Environment struct
 func EnvironmentFromAzureEnvironment(azureEnv azure.Environment) environments.Environment {
 	return environments.Environment{
 		AzureADEndpoint: environments.AzureADEndpoint(strings.TrimSuffix(azureEnv.ActiveDirectoryEndpoint, "/")),
