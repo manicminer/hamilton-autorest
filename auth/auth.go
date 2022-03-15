@@ -9,12 +9,12 @@ import (
 	"github.com/manicminer/hamilton/auth"
 )
 
-type CachedAutorestAuthorizer struct {
+type Authorizer struct {
 	auth.Authorizer
 }
 
 // WithAuthorization implements the autorest.Authorizer interface
-func (c *CachedAutorestAuthorizer) WithAuthorization() autorest.PrepareDecorator {
+func (c *Authorizer) WithAuthorization() autorest.PrepareDecorator {
 	return func(p autorest.Preparer) autorest.Preparer {
 		return autorest.PreparerFunc(func(req *http.Request) (*http.Request, error) {
 			var err error
@@ -51,7 +51,7 @@ func (c *CachedAutorestAuthorizer) WithAuthorization() autorest.PrepareDecorator
 }
 
 // BearerAuthorizerCallback is a helper that returns an *autorest.BearerAuthorizerCallback for use in data plane API clients in the Azure SDK
-func (c *CachedAutorestAuthorizer) BearerAuthorizerCallback() *autorest.BearerAuthorizerCallback {
+func (c *Authorizer) BearerAuthorizerCallback() *autorest.BearerAuthorizerCallback {
 	return autorest.NewBearerAuthorizerCallback(nil, func(_, resource string) (*autorest.BearerAuthorizer, error) {
 		token, err := c.Token()
 		if err != nil {
