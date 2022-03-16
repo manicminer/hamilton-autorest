@@ -6,7 +6,7 @@ import (
 
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/adal"
-	"github.com/manicminer/hamilton/auth"
+	"github.com/manicminer/hamilton-autorest/auth"
 	"github.com/manicminer/hamilton/environments"
 )
 
@@ -35,15 +35,15 @@ func TestAutorestAuthorizerWrapper(t *testing.T) {
 		t.Fatalf("adal.NewServicePrincipalToken(): %v", err)
 	}
 
-	auth, err := auth.NewAutorestAuthorizerWrapper(autorest.NewBearerAuthorizer(spt))
+	authorizer, err := auth.NewAuthorizerWrapper(autorest.NewBearerAuthorizer(spt))
 	if err != nil {
 		t.Fatalf("NewAutorestAuthorizerWrapper(): %v", err)
 	}
-	if auth == nil {
+	if authorizer == nil {
 		t.Fatal("auth is nil, expected Authorizer")
 	}
 
-	token, err := auth.Token()
+	token, err := authorizer.Token()
 	if err != nil {
 		t.Fatalf("auth.Token(): %v", err)
 	}
