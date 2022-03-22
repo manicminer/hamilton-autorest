@@ -10,8 +10,6 @@ on:
 jobs:
   test-auth:
     runs-on: self-hosted
-    strategy:
-      fail-fast: true
     steps:
       - name: Install Go
         uses: actions/setup-go@v2
