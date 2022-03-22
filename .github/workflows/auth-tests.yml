@@ -1,0 +1,25 @@
+---
+name: Tests - auth
+on:
+  pull_request:
+    types: ["opened", "synchronize"]
+    paths:
+      - "auth/**.go"
+      - ".github/workflows/auth-tests.yml"
+
+jobs:
+  test-auth:
+    runs-on: self-hosted
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17.6
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test
+        run: go test -count=1 -race -v ./auth
+
+# vim: set ts=2 sts=2 sw=2 et:
