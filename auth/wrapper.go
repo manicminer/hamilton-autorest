@@ -50,7 +50,10 @@ type ServicePrincipalToken interface {
 func (a *AuthorizerWrapper) tokenProviders() (tokenProviders []adal.OAuthTokenProvider, err error) {
 	if authorizer, ok := a.authorizer.(*autorest.BearerAuthorizer); ok && authorizer != nil {
 		// autorest.BearerAuthorizer provides a single token for the specified tenant
-		tokenProviders = append(tokenProviders, authorizer.TokenProvider())
+		tokenProviders = append(tokenProviders, &servicePrincipalTokenWrapper{
+			tokenType:  "Bearer",
+			tokenValue: authorizer.TokenProvider().OAuthToken(),
+		})
 	} else if authorizer, ok := a.authorizer.(*autorest.MultiTenantBearerAuthorizer); ok && authorizer != nil {
 		// autorest.MultiTenantBearerAuthorizer provides tokens for the primary specified
 		// tenant plus any specified auxiliary tenants
